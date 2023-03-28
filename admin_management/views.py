@@ -76,8 +76,7 @@ def calculateNumberOfOrdersByPaymentMethod():
     return payment_percentages
 
 
-@user_passes_test(lambda u: u.is_superuser)
-@never_cache
+
 def manage_user(request):
     user = Customer.objects.all().order_by('id')
     return render(request, 'admin/manage_user.html', {'user':user})
