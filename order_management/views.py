@@ -84,7 +84,12 @@ def add_to_cart(request, product_id):
                     return redirect('order_management:cart')
             else :
                 if product.stock >0:
-                    Cart.objects.create(user_id=current_user.id, product=product,quantity=1)
+                    if quantity is None:
+                        quantity = 1
+                    else:
+                        quantity= int(quantity)
+
+                    Cart.objects.create(user_id=current_user.id, product=product,quantity=quantity)
                     
                     messages.success(request, "Product added to cart")
                     return redirect('order_management:cart')

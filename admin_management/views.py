@@ -227,7 +227,7 @@ def add_banner(request):
         image = request.FILES['image']
         Banner.objects.create(title=title,  description=description,  images=image)
         messages.success(request, "Banner added")
-    return render(request,'admin/add_Banner.html', locals())
+    return render(request,'admin/add_banner.html', locals())
 
 
 def delete_banner(request, pid):
