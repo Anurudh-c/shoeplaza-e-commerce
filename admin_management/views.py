@@ -79,19 +79,22 @@ def calculateNumberOfOrdersByPaymentMethod():
     return payment_percentages
 
 
-
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def manage_user(request):
     user = Customer.objects.all().order_by('id')
     return render(request, 'admin/manage_user.html', {'user':user})
  
-
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def delete_user(request, pid):
     user = Customer.objects.get(id=pid)
     user.delete()
     messages.success(request, "User deleted successfully")
     return redirect('manage_user') 
 
-
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def blockuser(request, id):
     user = get_object_or_404(Customer, id=id)
     if user.is_active:
@@ -104,13 +107,17 @@ def blockuser(request, id):
         user.save()
         messages.success(request, "User unblocked")
         return redirect('manage_user')
-     
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def view_category(request):
     category =Category.objects.all().order_by('-created')
     return render(request,'admin/view_category.html',locals())
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def add_category(request):
     if request.method == "POST":
         name = request.POST['name']
@@ -124,6 +131,8 @@ def add_category(request):
     return render(request, 'admin/add_category.html')
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def edit_category(request, pid):
     category = Category.objects.get(id=pid)
     if request.method == "POST":
@@ -138,7 +147,8 @@ def edit_category(request, pid):
             return redirect(view_category)
     return render(request, 'admin/edit_category.html', locals())
 
-
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def delete_category(request, pid):
     category = Category.objects.get(id=pid)
     category.delete()   
@@ -146,10 +156,15 @@ def delete_category(request, pid):
     return redirect(view_category)
   
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def view_product(request):
     product = Products.objects.all().order_by('product_name')
     return render(request, 'admin/view_product.html', locals())
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def delete_product(request, pid):
     product = Products.objects.get(id=pid)
     product.delete()
@@ -157,6 +172,9 @@ def delete_product(request, pid):
     return redirect('view_product')
 
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def edit_product(request, pid):
     product = Products.objects.get(id=pid)
     category = Category.objects.all()
@@ -182,6 +200,9 @@ def edit_product(request, pid):
     return render(request, 'admin/edit_product.html', locals())
  
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def add_product(request):
     category = Category.objects.all()
     if request.method == "POST":
@@ -202,11 +223,17 @@ def add_product(request):
     return render(request,'admin/add_product.html', locals())
 
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def view_banner(request):
     banner = Banner.objects.all()
     return render(request,'admin/view_banner.html',{'banner':banner})
 
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def edit_banner(request, pid):
     banner = Banner.objects.get(id=pid)
     if request.method == "POST":
@@ -222,6 +249,8 @@ def edit_banner(request, pid):
     return render(request, 'admin/edit_banner.html', locals())
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def add_banner(request):
     banner = Banner.objects.all()
     if request.method == "POST":
@@ -233,6 +262,9 @@ def add_banner(request):
     return render(request,'admin/add_banner.html', locals())
 
 
+
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def delete_banner(request, pid):
     banner = Banner.objects.get(id=pid)
     banner.delete()   
@@ -240,11 +272,15 @@ def delete_banner(request, pid):
     return redirect(view_banner)
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def view_coupons(request):
     coupons = Coupon.objects.all().order_by('valid_at')
     return render(request,'admin/view_coupons.html',{'coupons':coupons})
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def edit_coupon(request, pid):
     coupon = Coupon.objects.get(id=pid)
 
@@ -261,6 +297,8 @@ def edit_coupon(request, pid):
 
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def delete_coupon(request, pid):
     coupon = Coupon.objects.get(id=pid)
     coupon.delete()
@@ -269,6 +307,8 @@ def delete_coupon(request, pid):
 
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def add_coupons(request):
     if request.method == 'POST':
         form = CouponForm(request.POST)
@@ -281,12 +321,16 @@ def add_coupons(request):
 
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def manage_order(request):
     orders=Order.objects.all().order_by('-status')
     return render(request, 'admin/manage_order.html', {'orders':orders})
 
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def update_order(request, id):
     if request.method == 'POST':
         order = Order.objects.get(id=id)
@@ -307,6 +351,8 @@ def update_order(request, id):
 
 
 
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def view_order(request,id):
     order = Order.objects.filter(id=id).first()
     orderitems = OrderProduct.objects.filter(order=order)
