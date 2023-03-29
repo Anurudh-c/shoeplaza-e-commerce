@@ -47,7 +47,7 @@ def add_to_wishlist(request, product_id):
 def remove_from_wishlist(request, product_id):
     product = get_object_or_404(Products, id=product_id)
     Wishlist.objects.filter(user=request.user, product=product).delete()
-    messages.error(request, f'{product.product_name} was removed from your wishlist.')
+    messages.success(request, f'{product.product_name} was removed from your wishlist.')
     return redirect('order_management:wishlist')
 
 
@@ -131,7 +131,7 @@ def add_to_cart(request, product_id):
 def remove_from_cart(request, product_id):  
     product = get_object_or_404(Products, id=product_id)
     Cart.objects.filter(user=request.user, product=product).delete()
-    messages.error(request, f'{product.product_name} was removed from your Cart.')
+    messages.success(request, f'{product.product_name} was removed from your Cart.')
     return redirect('order_management:cart')
 
 
@@ -271,7 +271,7 @@ def confirmation(request):
         tax = request.POST.get('tax')
         newAddress_id = request.POST.get('addressSelected')
         if(newAddress_id == None):
-            messages.error(request,'Select An Address to Proceed to Checkout.')
+            messages.warning(request,'Select An Address to Proceed to Checkout.')
             return redirect('order_management:checkout')
         else:
             address  = DeliveryDetails.objects.get(id = newAddress_id)
@@ -396,7 +396,7 @@ def placeOrder(request):
                item.delete()
                return redirect('order_management:cart')
             elif(orderproduct.stock < item.quantity):
-               messages.success(request,  f"{orderproduct.stock} only left in cart.")
+               messages.warning(request,  f"{orderproduct.stock} only left in cart.")
                return redirect('order_management:cart')
             else:
                orderproduct.stock -=  item.quantity
@@ -536,7 +536,7 @@ def cancelOrder(request, id):
             }
         else:
             msg = "Your bank has not completed the payment yet."
-            messages.error(request, msg)
+            messages.warning(request, msg)
             orderitems = OrderProduct.objects.filter(order=order)
             context = {
                 'order': order,
@@ -567,7 +567,7 @@ def cancelOrder(request, id):
             messages.success(request, msg)
         else:
             msg = "Your order is not cancelled because the refund could not be completed now. Please try again later. If the issue continues, CONTACT THE SUPPORT TEAM!"
-            messages.error(request, msg)
+            messages.warning(request, msg)
             pass
     else:
         if payment.paid:
@@ -579,8 +579,8 @@ def cancelOrder(request, id):
         else:
             order.status = 'Cancelled'
             order.save()
-            msg = "Your payment has not been received yet. But the order has been cancelled."
-            messages.warning(request, msg)
+            msg = "YOUR ORDER HAS BEEN SUCCESSFULLY CANCELLED!"
+            messages.success(request, msg)
 
     orderitems = OrderProduct.objects.filter(order=order)
     context = {

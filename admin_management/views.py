@@ -11,6 +11,8 @@ from django.core.paginator import Paginator
 from django.db.models import  Sum
 from django.views.decorators.cache import never_cache
 from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import user_passes_test
+
 
 
 
@@ -27,7 +29,8 @@ def admin_login(request):
             messages.info(request, 'Invalid username or password')
     return render(request, 'admin/admin_login.html')
 
-
+@user_passes_test(lambda u: u.is_superuser)
+@never_cache
 def admindashboard(request):
     user=Customer.objects.all().count()
     product=Products.objects.all().count()

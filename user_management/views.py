@@ -127,10 +127,7 @@ def userlogin(request):
         user = auth.authenticate(username=form_username, password=form_password)
         if user is not None:
             auth.login(request, user)
-            if user.is_superuser:
-                return redirect('admindashboard')
-            else:
-                return redirect('homepage')
+            return redirect('homepage')
         else:
             messages.info(request, 'Invalid username or password')
     return render(request, 'userlogin.html')
@@ -198,7 +195,7 @@ def resetpassword(request):
             # Check if password is strong enough
             regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
             if not re.match(regex, password):
-                messages.error(request, "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character")
+                messages.warning(request, "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character")
                 return redirect('resetpassword')
 
             user.set_password(password)
@@ -206,7 +203,7 @@ def resetpassword(request):
             messages.success(request,"Password reset successful")
             return redirect('userloginpage')
         else:
-            messages.error(request,"Password not match")
+            messages.warning(request,"Password not match")
             return redirect('resetpassword')
     else:
         return render(request, 'resetPassword.html')
@@ -267,7 +264,7 @@ def changepassword(request):
                 # Check if new password is strong enough
                 regex = r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$"
                 if not re.match(regex, new_password):
-                    messages.error(request, "New password must contain at least 8 characters, including one letter, one number, and one special character")
+                    messages.warning(request, "New password must contain at least 8 characters, including one letter, one number, and one special character")
                     return redirect('changepassword')
 
                 user.set_password(new_password)
@@ -300,7 +297,7 @@ def viewAddresses(request):
 def deleteAddress(request, address_id):
     address=DeliveryDetails.objects.get(id = address_id)
     address.delete()
-    messages.error(request,"Address removed successfully")
+    messages.success(request,"Address removed successfully")
     return redirect('viewAddresses')
 
 

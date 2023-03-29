@@ -56,7 +56,7 @@ $(document).ready(function () {
 
                     console.log(response, amountToBePaid);
                     var options = {
-                        key: shoeplaza.settings.API_KEY, // Enter the Key ID generated from the Dashboard
+                        key: "shoeplaza.settings.API_KEY", // Enter the Key ID generated from the Dashboard
                         amount: amountToBePaid *100, //response.total_price *100 , // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                         currency: "INR",
                         name: "Anurudh C",
