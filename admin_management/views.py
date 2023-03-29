@@ -319,6 +319,3 @@ def view_order(request,id):
     return render(request, 'admin/view_order.html',context)
 
 
-def adminlogout(request):
-     auth.logout(request)
-     return redirect('admin_login')

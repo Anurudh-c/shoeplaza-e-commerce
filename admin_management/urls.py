@@ -25,7 +25,6 @@ urlpatterns=[
     path('manage_order/', views.manage_order, name="manage_order"),
     path('view_order/<int:id>/',views.view_order, name='view_order'),
     path('update_order/<int:id>', views.update_order, name="update_order"),
-    path('adminlogout',views.adminlogout,name='adminlogout'),
 
 
 
